@@ -10,16 +10,101 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, UserPlus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const UsersPage = () => {
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+
   return (
     <div className="p-6 max-w-[1200px] mx-auto space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Users</h1>
-        <Button>
-          <UserPlus className="w-4 h-4 mr-2" />
-          Add User
-        </Button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <UserPlus className="w-4 h-4 mr-2" />
+              Add Admin
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add New Admin</DialogTitle>
+              <DialogDescription>
+                Create a new administrator account with specific roles and
+                permissions.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input id="name" placeholder="Enter admin's full name" />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="admin@company.com"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="role">Admin Role</Label>
+                <Select defaultValue="admin">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select admin role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="super_admin">Super Admin</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="moderator">Moderator</SelectItem>
+                    <SelectItem value="analyst">Analyst</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="permissions">Permissions</Label>
+                <Select defaultValue="full">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select permission level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="full">Full Access</SelectItem>
+                    <SelectItem value="limited">Limited Access</SelectItem>
+                    <SelectItem value="read_only">Read Only</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="department">Department</Label>
+                <Input id="department" placeholder="e.g., IT, HR, Marketing" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => setIsDialogOpen(false)}>
+                Create Admin
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="flex items-center space-x-2">

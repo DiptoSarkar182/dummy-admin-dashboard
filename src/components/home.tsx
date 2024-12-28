@@ -134,7 +134,7 @@ const Home = () => {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes slideDown {
           from {
             opacity: 0;

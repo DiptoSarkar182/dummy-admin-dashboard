@@ -60,7 +60,6 @@ const Sidebar = ({
       href: "/notifications",
     },
     { icon: <Settings size={20} />, label: "Settings", href: "/settings" },
-    { icon: <HelpCircle size={20} />, label: "Help", href: "/help" },
   ];
 
   return (

@@ -2,13 +2,38 @@ import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Maximize2, BarChart2, LineChart, PieChart } from "lucide-react";
+import { Maximize2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+} from "chart.js";
+import { Line, Bar } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+);
 
 interface ChartsSectionProps {
   dailyStats?: {
@@ -42,6 +67,44 @@ const ChartsSection = ({
   const [expandedChart, setExpandedChart] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("daily");
 
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(0, 0, 0, 0.1)",
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
+
+  const getChartData = (labels: string[], data: number[], type: string) => ({
+    labels,
+    datasets: [
+      {
+        label: `${type} Data`,
+        data,
+        borderColor: "rgb(99, 102, 241)",
+        backgroundColor:
+          type === "daily" ? "rgb(99, 102, 241)" : "rgba(99, 102, 241, 0.2)",
+        fill: type !== "daily",
+        tension: 0.4,
+      },
+    ],
+  });
+
   return (
     <Card className="w-full h-[600px] bg-white dark:bg-slate-800 p-6">
       <div className="flex items-center justify-between mb-6">
@@ -69,24 +132,28 @@ const ChartsSection = ({
         </TabsList>
 
         <TabsContent value="daily" className="h-[400px]">
-          <div className="flex items-center justify-center h-full">
-            <BarChart2 className="w-16 h-16 text-muted-foreground" />
-            {/* Chart.js or other chart library would be implemented here */}
-          </div>
+          <Bar
+            options={chartOptions}
+            data={getChartData(dailyStats.labels, dailyStats.data, "daily")}
+          />
         </TabsContent>
 
         <TabsContent value="weekly" className="h-[400px]">
-          <div className="flex items-center justify-center h-full">
-            <LineChart className="w-16 h-16 text-muted-foreground" />
-            {/* Chart.js or other chart library would be implemented here */}
-          </div>
+          <Line
+            options={chartOptions}
+            data={getChartData(weeklyStats.labels, weeklyStats.data, "weekly")}
+          />
         </TabsContent>
 
         <TabsContent value="monthly" className="h-[400px]">
-          <div className="flex items-center justify-center h-full">
-            <PieChart className="w-16 h-16 text-muted-foreground" />
-            {/* Chart.js or other chart library would be implemented here */}
-          </div>
+          <Line
+            options={chartOptions}
+            data={getChartData(
+              monthlyStats.labels,
+              monthlyStats.data,
+              "monthly",
+            )}
+          />
         </TabsContent>
       </Tabs>
 
@@ -101,15 +168,32 @@ const ChartsSection = ({
               Analytics
             </DialogTitle>
           </DialogHeader>
-          <div className="flex items-center justify-center h-full">
+          <div className="h-full p-6">
             {expandedChart === "daily" && (
-              <BarChart2 className="w-32 h-32 text-muted-foreground" />
+              <Bar
+                options={chartOptions}
+                data={getChartData(dailyStats.labels, dailyStats.data, "daily")}
+              />
             )}
             {expandedChart === "weekly" && (
-              <LineChart className="w-32 h-32 text-muted-foreground" />
+              <Line
+                options={chartOptions}
+                data={getChartData(
+                  weeklyStats.labels,
+                  weeklyStats.data,
+                  "weekly",
+                )}
+              />
             )}
             {expandedChart === "monthly" && (
-              <PieChart className="w-32 h-32 text-muted-foreground" />
+              <Line
+                options={chartOptions}
+                data={getChartData(
+                  monthlyStats.labels,
+                  monthlyStats.data,
+                  "monthly",
+                )}
+              />
             )}
           </div>
         </DialogContent>

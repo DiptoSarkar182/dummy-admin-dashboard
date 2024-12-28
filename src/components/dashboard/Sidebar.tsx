@@ -11,6 +11,9 @@ import {
   Bell,
   Calendar,
   BarChart,
+  LogOut,
+  User,
+  Settings2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +22,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface SidebarProps {
   isCollapsed?: boolean;
@@ -112,29 +123,48 @@ const Sidebar = ({
       <div className="p-2 border-t">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                className={cn(
-                  "w-full justify-start gap-3",
-                  isCollapsed ? "px-2" : "px-4",
-                )}
-              >
-                <img
-                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin"
-                  alt="User"
-                  className="w-6 h-6 rounded-full"
-                />
-                {!isCollapsed && (
-                  <div className="flex flex-col items-start">
-                    <span className="text-sm font-medium">Admin User</span>
-                    <span className="text-xs text-muted-foreground">
-                      admin@example.com
-                    </span>
-                  </div>
-                )}
-              </Button>
-            </TooltipTrigger>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start gap-3",
+                    isCollapsed ? "px-2" : "px-4",
+                  )}
+                >
+                  <img
+                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin"
+                    alt="User"
+                    className="w-6 h-6 rounded-full"
+                  />
+                  {!isCollapsed && (
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm font-medium">Admin User</span>
+                      <span className="text-xs text-muted-foreground">
+                        admin@example.com
+                      </span>
+                    </div>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" side="top" className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings2 className="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-red-600">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             {isCollapsed && (
               <TooltipContent side="right" className="flex flex-col gap-1">
                 <p className="font-medium">Admin User</p>

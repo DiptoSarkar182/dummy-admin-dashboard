@@ -1,5 +1,7 @@
 // tailwind.config.js
-export default {
+const tailwindcssAnimate = require("tailwindcss-animate");
+
+module.exports = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -73,5 +75,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 };

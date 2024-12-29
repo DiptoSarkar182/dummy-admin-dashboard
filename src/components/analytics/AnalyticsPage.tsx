@@ -344,7 +344,7 @@ const AnalyticsPage = () => {
         {/* ... rest of the tabs content ... */}
       </Tabs>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes slideDown {
           from {
             transform: translateY(-20px);

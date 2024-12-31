@@ -341,10 +341,226 @@ const AnalyticsPage = () => {
           </div>
         </TabsContent>
 
-        {/* ... rest of the tabs content ... */}
+        <TabsContent value="performance">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Page Load Time */}
+            <Card className="p-6 animate-slideUp">
+              <h3 className="text-lg font-semibold mb-4">Page Load Time</h3>
+              <div className="space-y-4">
+                {[
+                  { page: "/home", time: "0.8s", color: "bg-green-500" },
+                  { page: "/products", time: "1.2s", color: "bg-yellow-500" },
+                  { page: "/checkout", time: "1.5s", color: "bg-red-500" },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className="space-y-2 animate-slideRight"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className="flex justify-between text-sm">
+                      <span>{item.page}</span>
+                      <span className="font-medium">{item.time}</span>
+                    </div>
+                    <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${item.color} animate-progressBar`}
+                        style={{
+                          width: `${(parseFloat(item.time) / 2) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            {/* Error Rates */}
+            <Card className="p-6 animate-slideUp animation-delay-200">
+              <h3 className="text-lg font-semibold mb-4">Error Rates</h3>
+              <div className="space-y-4">
+                {[
+                  { type: "404 Errors", count: 23, trend: "down" },
+                  { type: "API Failures", count: 12, trend: "up" },
+                  { type: "JS Errors", count: 8, trend: "down" },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg animate-fadeIn"
+                    style={{ animationDelay: `${index * 150}ms` }}
+                  >
+                    <span>{item.type}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{item.count}</span>
+                      {item.trend === "up" ? (
+                        <ArrowUpRight className="h-4 w-4 text-red-500" />
+                      ) : (
+                        <ArrowDownRight className="h-4 w-4 text-green-500" />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            {/* Server Response Time */}
+            <Card className="p-6 animate-slideUp animation-delay-300">
+              <h3 className="text-lg font-semibold mb-4">
+                Server Response Time
+              </h3>
+              <div className="h-[300px]">
+                <Line
+                  options={chartOptions}
+                  data={{
+                    labels: ["12am", "4am", "8am", "12pm", "4pm", "8pm"],
+                    datasets: [
+                      {
+                        label: "Response Time (ms)",
+                        data: [150, 230, 180, 400, 280, 220],
+                        borderColor: "rgb(99, 102, 241)",
+                        backgroundColor: "rgba(99, 102, 241, 0.1)",
+                        fill: true,
+                      },
+                    ],
+                  }}
+                />
+              </div>
+            </Card>
+
+            {/* Resource Usage */}
+            <Card className="p-6 animate-slideUp animation-delay-400">
+              <h3 className="text-lg font-semibold mb-4">Resource Usage</h3>
+              <div className="space-y-6">
+                {[
+                  { name: "CPU", usage: 65 },
+                  { name: "Memory", usage: 82 },
+                  { name: "Disk", usage: 45 },
+                ].map((resource, index) => (
+                  <div key={index} className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>{resource.name}</span>
+                      <span className="font-medium">{resource.usage}%</span>
+                    </div>
+                    <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+                      <div
+                        className={`h-full animate-progressBar ${resource.usage > 80 ? "bg-red-500" : resource.usage > 60 ? "bg-yellow-500" : "bg-green-500"}`}
+                        style={{ width: `${resource.usage}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="engagement">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* User Sessions */}
+            <Card className="p-6 animate-slideUp">
+              <h3 className="text-lg font-semibold mb-4">User Sessions</h3>
+              <div className="space-y-4">
+                {[
+                  { duration: "0-1 min", count: 234 },
+                  { duration: "1-5 mins", count: 645 },
+                  { duration: "5-15 mins", count: 432 },
+                  { duration: "15+ mins", count: 189 },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 hover:bg-secondary/20 rounded-lg transition-colors animate-fadeIn"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <span>{item.duration}</span>
+                    <span className="font-medium">{item.count} users</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            {/* Popular Pages */}
+            <Card className="p-6 animate-slideUp animation-delay-200">
+              <h3 className="text-lg font-semibold mb-4">Popular Pages</h3>
+              <div className="space-y-4">
+                {[
+                  { page: "/home", views: 12453 },
+                  { page: "/products", views: 8765 },
+                  { page: "/about", views: 5432 },
+                  { page: "/contact", views: 3211 },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 hover:bg-secondary/20 rounded-lg transition-colors animate-fadeIn"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <span>{item.page}</span>
+                    <span className="font-medium">
+                      {item.views.toLocaleString()} views
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            {/* User Interactions */}
+            <Card className="p-6 animate-slideUp animation-delay-300">
+              <h3 className="text-lg font-semibold mb-4">User Interactions</h3>
+              <div className="h-[300px]">
+                <Bar
+                  options={chartOptions}
+                  data={{
+                    labels: [
+                      "Clicks",
+                      "Forms",
+                      "Downloads",
+                      "Shares",
+                      "Comments",
+                    ],
+                    datasets: [
+                      {
+                        label: "Interactions",
+                        data: [1234, 876, 543, 321, 234],
+                        backgroundColor: "rgba(99, 102, 241, 0.8)",
+                      },
+                    ],
+                  }}
+                />
+              </div>
+            </Card>
+
+            {/* Engagement by Device */}
+            <Card className="p-6 animate-slideUp animation-delay-400">
+              <h3 className="text-lg font-semibold mb-4">
+                Engagement by Device
+              </h3>
+              <div className="h-[300px]">
+                <Pie
+                  options={{
+                    ...chartOptions,
+                    plugins: {
+                      ...chartOptions.plugins,
+                      legend: {
+                        ...chartOptions.plugins.legend,
+                        position: "right" as const,
+                      },
+                    },
+                  }}
+                  data={{
+                    labels: ["Desktop", "Mobile", "Tablet"],
+                    datasets: [
+                      {
+                        data: [55, 35, 10],
+                        backgroundColor: ["#4F46E5", "#EC4899", "#10B981"],
+                      },
+                    ],
+                  }}
+                />
+              </div>
+            </Card>
+          </div>
+        </TabsContent>
       </Tabs>
 
-      <style>{`
+      <style jsx global>{`
         @keyframes slideDown {
           from {
             transform: translateY(-20px);
